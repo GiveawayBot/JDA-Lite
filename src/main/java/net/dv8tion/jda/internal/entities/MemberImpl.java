@@ -43,12 +43,9 @@ public class MemberImpl implements Member
     private static final ZoneOffset OFFSET = ZoneOffset.of("+00:00");
     private final JDAImpl api;
     private final Set<Role> roles = ConcurrentHashMap.newKeySet();
-    private final GuildVoiceState voiceState;
 
     private GuildImpl guild;
     private User user;
-    private String nickname;
-    private long joinDate, boostDate;
     private boolean pending = false;
 
     public MemberImpl(GuildImpl guild, User user)
@@ -56,9 +53,7 @@ public class MemberImpl implements Member
         this.api = (JDAImpl) user.getJDA();
         this.guild = guild;
         this.user = user;
-        this.joinDate = 0;
         boolean cacheState = api.isCacheFlagSet(CacheFlag.VOICE_STATE) || user.equals(api.getSelfUser());
-        this.voiceState = cacheState ? new GuildVoiceStateImpl(this) : null;
     }
 
     public MemberPresenceImpl getPresence()
@@ -99,28 +94,26 @@ public class MemberImpl implements Member
     @Override
     public OffsetDateTime getTimeJoined()
     {
-        if (hasTimeJoined())
-            return OffsetDateTime.ofInstant(Instant.ofEpochMilli(joinDate), OFFSET);
         return getGuild().getTimeCreated();
     }
 
     @Override
     public boolean hasTimeJoined()
     {
-        return joinDate != 0;
+        return false;
     }
 
     @Nullable
     @Override
     public OffsetDateTime getTimeBoosted()
     {
-        return boostDate != 0 ? OffsetDateTime.ofInstant(Instant.ofEpochMilli(boostDate), OFFSET) : null;
+        return null;
     }
 
     @Override
     public GuildVoiceState getVoiceState()
     {
-        return voiceState;
+        return null;
     }
 
     @Nonnull
@@ -162,14 +155,14 @@ public class MemberImpl implements Member
     @Override
     public String getNickname()
     {
-        return nickname;
+        return null;
     }
 
     @Nonnull
     @Override
     public String getEffectiveName()
     {
-        return nickname != null ? nickname : getUser().getName();
+        return getUser().getName();
     }
 
     @Nonnull
@@ -355,19 +348,16 @@ public class MemberImpl implements Member
 
     public MemberImpl setNickname(String nickname)
     {
-        this.nickname = nickname;
         return this;
     }
 
     public MemberImpl setJoinDate(long joinDate)
     {
-        this.joinDate = joinDate;
         return this;
     }
 
     public MemberImpl setBoostDate(long boostDate)
     {
-        this.boostDate = boostDate;
         return this;
     }
 
@@ -384,7 +374,7 @@ public class MemberImpl implements Member
 
     public long getBoostDateRaw()
     {
-        return boostDate;
+        return 0L;
     }
 
     @Override
@@ -416,7 +406,7 @@ public class MemberImpl implements Member
     @Override
     public String getAsMention()
     {
-        return (nickname == null ? "<@" : "<@!") + user.getId() + '>';
+        return "<@" + user.getId() + '>';
     }
 
     @Nullable

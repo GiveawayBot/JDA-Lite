@@ -17,6 +17,7 @@
 package net.dv8tion.jda.internal.entities;
 
 import gnu.trove.map.TLongObjectMap;
+import gnu.trove.map.hash.TLongObjectHashMap;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.restaction.ChannelAction;
 import net.dv8tion.jda.api.utils.MiscUtil;
@@ -29,9 +30,6 @@ import java.util.List;
 
 public class VoiceChannelImpl extends AbstractChannelImpl<VoiceChannel, VoiceChannelImpl> implements VoiceChannel
 {
-    private final TLongObjectMap<Member> connectedMembers = MiscUtil.newLongMap();
-    private int userLimit;
-    private int bitrate;
 
     public VoiceChannelImpl(long id, GuildImpl guild)
     {
@@ -48,13 +46,13 @@ public class VoiceChannelImpl extends AbstractChannelImpl<VoiceChannel, VoiceCha
     @Override
     public int getUserLimit()
     {
-        return userLimit;
+        return 1;
     }
 
     @Override
     public int getBitrate()
     {
-        return bitrate;
+        return 1;
     }
 
     @Nonnull
@@ -88,7 +86,7 @@ public class VoiceChannelImpl extends AbstractChannelImpl<VoiceChannel, VoiceCha
     public ChannelAction<VoiceChannel> createCopy(@Nonnull Guild guild)
     {
         Checks.notNull(guild, "Guild");
-        ChannelAction<VoiceChannel> action = guild.createVoiceChannel(name).setBitrate(bitrate).setUserlimit(userLimit);
+        ChannelAction<VoiceChannel> action = guild.createVoiceChannel(name).setBitrate(1).setUserlimit(1);
         if (guild.equals(getGuild()))
         {
             Category parent = getParent();
@@ -124,13 +122,11 @@ public class VoiceChannelImpl extends AbstractChannelImpl<VoiceChannel, VoiceCha
 
     public VoiceChannelImpl setUserLimit(int userLimit)
     {
-        this.userLimit = userLimit;
         return this;
     }
 
     public VoiceChannelImpl setBitrate(int bitrate)
     {
-        this.bitrate = bitrate;
         return this;
     }
 
@@ -138,11 +134,6 @@ public class VoiceChannelImpl extends AbstractChannelImpl<VoiceChannel, VoiceCha
 
     public TLongObjectMap<Member> getConnectedMembersMap()
     {
-        connectedMembers.transformValues((member) -> {
-            // Load real member instance from cache to provided up-to-date cache information
-            Member real = getGuild().getMemberById(member.getIdLong());
-            return real != null ? real : member;
-        });
-        return connectedMembers;
+        return new TLongObjectHashMap<>();
     }
 }

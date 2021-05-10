@@ -50,8 +50,6 @@ import java.util.stream.Collectors;
 
 public class TextChannelImpl extends AbstractChannelImpl<TextChannel, TextChannelImpl> implements TextChannel
 {
-    private String topic;
-    private long lastMessageId;
     private boolean nsfw;
     private boolean news;
     private int slowmode;
@@ -249,7 +247,7 @@ public class TextChannelImpl extends AbstractChannelImpl<TextChannel, TextChanne
     @Override
     public long getLatestMessageIdLong()
     {
-        final long messageId = lastMessageId;
+        final long messageId = 0;
         if (messageId == 0)
             throw new IllegalStateException("No last message id found.");
         return messageId;
@@ -258,7 +256,7 @@ public class TextChannelImpl extends AbstractChannelImpl<TextChannel, TextChanne
     @Override
     public boolean hasLatestMessage()
     {
-        return lastMessageId != 0;
+        return false;
     }
 
     @Nonnull
@@ -271,7 +269,7 @@ public class TextChannelImpl extends AbstractChannelImpl<TextChannel, TextChanne
     @Override
     public String getTopic()
     {
-        return topic;
+        return null;
     }
 
     @Override
@@ -322,7 +320,7 @@ public class TextChannelImpl extends AbstractChannelImpl<TextChannel, TextChanne
     public ChannelAction<TextChannel> createCopy(@Nonnull Guild guild)
     {
         Checks.notNull(guild, "Guild");
-        ChannelAction<TextChannel> action = guild.createTextChannel(name).setNSFW(nsfw).setTopic(topic).setSlowmode(slowmode);
+        ChannelAction<TextChannel> action = guild.createTextChannel(name).setNSFW(nsfw).setTopic(null).setSlowmode(slowmode);
         if (guild.equals(getGuild()))
         {
             Category parent = getParent();
@@ -618,13 +616,11 @@ public class TextChannelImpl extends AbstractChannelImpl<TextChannel, TextChanne
 
     public TextChannelImpl setTopic(String topic)
     {
-        this.topic = topic;
         return this;
     }
 
     public TextChannelImpl setLastMessageId(long id)
     {
-        this.lastMessageId = id;
         return this;
     }
 

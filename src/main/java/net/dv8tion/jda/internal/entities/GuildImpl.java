@@ -88,18 +88,8 @@ public class GuildImpl implements Guild
 
     private Member owner;
     private String name;
-    private String iconId, splashId;
-    private String region;
-    private String vanityCode;
-    private String description, banner;
-    private int maxPresences, maxMembers;
-    private int boostCount;
     private long ownerId;
     private Set<String> features;
-    private VoiceChannel afkChannel;
-    private TextChannel systemChannel;
-    private TextChannel rulesChannel;
-    private TextChannel communityUpdatesChannel;
     private Role publicRole;
     private VerificationLevel verificationLevel = VerificationLevel.UNKNOWN;
     private NotificationLevel defaultNotificationLevel = NotificationLevel.UNKNOWN;
@@ -204,7 +194,7 @@ public class GuildImpl implements Guild
     @Override
     public String getIconId()
     {
-        return iconId;
+        return null;
     }
 
     @Nonnull
@@ -217,7 +207,7 @@ public class GuildImpl implements Guild
     @Override
     public String getSplashId()
     {
-        return splashId;
+        return null;
     }
 
     @Nonnull
@@ -240,7 +230,7 @@ public class GuildImpl implements Guild
     @Override
     public String getVanityCode()
     {
-        return vanityCode;
+        return null;
     }
 
     @Override
@@ -251,14 +241,14 @@ public class GuildImpl implements Guild
         JDAImpl api = getJDA();
         Route.CompiledRoute route = Route.Guilds.GET_VANITY_URL.compile(getId());
         return new RestActionImpl<>(api, route,
-            (response, request) -> new VanityInvite(vanityCode, response.getObject().getInt("uses")));
+            (response, request) -> new VanityInvite(null, response.getObject().getInt("uses")));
     }
 
     @Nullable
     @Override
     public String getDescription()
     {
-        return description;
+        return null;
     }
 
     @Nonnull
@@ -272,7 +262,7 @@ public class GuildImpl implements Guild
     @Override
     public String getBannerId()
     {
-        return banner;
+        return null;
     }
 
     @Nonnull
@@ -285,7 +275,7 @@ public class GuildImpl implements Guild
     @Override
     public int getBoostCount()
     {
-        return boostCount;
+        return 0;
     }
 
     @Nonnull
@@ -302,13 +292,13 @@ public class GuildImpl implements Guild
     @Override
     public int getMaxMembers()
     {
-        return maxMembers;
+        return 1;
     }
 
     @Override
     public int getMaxPresences()
     {
-        return maxPresences;
+        return 1;
     }
 
     @Nonnull
@@ -321,8 +311,6 @@ public class GuildImpl implements Guild
             DataObject json = response.getObject();
             int memberLimit = json.getInt("max_members", 0);
             int presenceLimit = json.getInt("max_presences", 5000);
-            this.maxMembers = memberLimit;
-            this.maxPresences = presenceLimit;
             int approxMembers = json.getInt("approximate_member_count", this.memberCount);
             int approxPresence = json.getInt("approximate_presence_count", 0);
             return new MetaData(memberLimit, presenceLimit, approxPresence, approxMembers);
@@ -332,25 +320,25 @@ public class GuildImpl implements Guild
     @Override
     public VoiceChannel getAfkChannel()
     {
-        return afkChannel;
+        return null;
     }
 
     @Override
     public TextChannel getSystemChannel()
     {
-        return systemChannel;
+        return null;
     }
 
     @Override
     public TextChannel getRulesChannel()
     {
-        return rulesChannel;
+        return null;
     }
 
     @Override
     public TextChannel getCommunityUpdatesChannel()
     {
-        return communityUpdatesChannel;
+        return null;
     }
 
     @Nonnull
@@ -407,7 +395,7 @@ public class GuildImpl implements Guild
     @Override
     public String getRegionRaw()
     {
-        return region;
+        return "region";
     }
 
     @Override
@@ -1537,7 +1525,6 @@ public class GuildImpl implements Guild
 
     public GuildImpl setIconId(String iconId)
     {
-        this.iconId = iconId;
         return this;
     }
 
@@ -1549,67 +1536,56 @@ public class GuildImpl implements Guild
 
     public GuildImpl setSplashId(String splashId)
     {
-        this.splashId = splashId;
         return this;
     }
 
     public GuildImpl setRegion(String region)
     {
-        this.region = region;
         return this;
     }
 
     public GuildImpl setVanityCode(String code)
     {
-        this.vanityCode = code;
         return this;
     }
 
     public GuildImpl setDescription(String description)
     {
-        this.description = description;
         return this;
     }
 
     public GuildImpl setBannerId(String bannerId)
     {
-        this.banner = bannerId;
         return this;
     }
 
     public GuildImpl setMaxPresences(int maxPresences)
     {
-        this.maxPresences = maxPresences;
         return this;
     }
 
     public GuildImpl setMaxMembers(int maxMembers)
     {
-        this.maxMembers = maxMembers;
         return this;
     }
 
     public GuildImpl setAfkChannel(VoiceChannel afkChannel)
     {
-        this.afkChannel = afkChannel;
         return this;
     }
 
     public GuildImpl setSystemChannel(TextChannel systemChannel)
     {
-        this.systemChannel = systemChannel;
         return this;
     }
 
     public GuildImpl setRulesChannel(TextChannel rulesChannel)
     {
-        this.rulesChannel = rulesChannel;
         return this;
     }
 
     public GuildImpl setCommunityUpdatesChannel(TextChannel communityUpdatesChannel)
     {
-        this.communityUpdatesChannel = communityUpdatesChannel;
         return this;
     }
 
@@ -1664,7 +1640,6 @@ public class GuildImpl implements Guild
 
     public GuildImpl setBoostCount(int count)
     {
-        this.boostCount = count;
         return this;
     }
 
