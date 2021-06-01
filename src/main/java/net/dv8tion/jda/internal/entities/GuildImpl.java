@@ -76,20 +76,20 @@ public class GuildImpl implements Guild
     private final JDAImpl api;
 
     private final SortedSnowflakeCacheViewImpl<Category> categoryCache = new SortedSnowflakeCacheViewImpl<>(Category.class, GuildChannel::getName, Comparator.naturalOrder());
-    private final SortedSnowflakeCacheViewImpl<VoiceChannel> voiceChannelCache = new SortedSnowflakeCacheViewImpl<>(VoiceChannel.class, GuildChannel::getName, Comparator.naturalOrder());
-    private final SortedSnowflakeCacheViewImpl<StoreChannel> storeChannelCache = new SortedSnowflakeCacheViewImpl<>(StoreChannel.class, StoreChannel::getName, Comparator.naturalOrder());
+    //private final SortedSnowflakeCacheViewImpl<VoiceChannel> voiceChannelCache = new SortedSnowflakeCacheViewImpl<>(VoiceChannel.class, GuildChannel::getName, Comparator.naturalOrder());
+    //private final SortedSnowflakeCacheViewImpl<StoreChannel> storeChannelCache = new SortedSnowflakeCacheViewImpl<>(StoreChannel.class, StoreChannel::getName, Comparator.naturalOrder());
     private final SortedSnowflakeCacheViewImpl<TextChannel> textChannelCache = new SortedSnowflakeCacheViewImpl<>(TextChannel.class, GuildChannel::getName, Comparator.naturalOrder());
     private final SortedSnowflakeCacheViewImpl<Role> roleCache = new SortedSnowflakeCacheViewImpl<>(Role.class, Role::getName, Comparator.reverseOrder());
-    private final SnowflakeCacheViewImpl<Emote> emoteCache = new SnowflakeCacheViewImpl<>(Emote.class, Emote::getName);
+    //private final SnowflakeCacheViewImpl<Emote> emoteCache = new SnowflakeCacheViewImpl<>(Emote.class, Emote::getName);
     private final MemberCacheViewImpl memberCache = new MemberCacheViewImpl();
     private final CacheView.SimpleCacheView<MemberPresenceImpl> memberPresences;
 
-    private GuildManager manager;
+    //private GuildManager manager;
 
     private Member owner;
     private String name;
     private long ownerId;
-    private Set<String> features;
+    //private Set<String> features;
     private Role publicRole;
     private VerificationLevel verificationLevel = VerificationLevel.UNKNOWN;
     private NotificationLevel defaultNotificationLevel = NotificationLevel.UNKNOWN;
@@ -201,7 +201,7 @@ public class GuildImpl implements Guild
     @Override
     public Set<String> getFeatures()
     {
-        return features;
+        return Collections.emptySet();
     }
 
     @Override
@@ -439,7 +439,7 @@ public class GuildImpl implements Guild
     @Override
     public SortedSnowflakeCacheView<StoreChannel> getStoreChannelCache()
     {
-        return storeChannelCache;
+        return new SortedSnowflakeCacheViewImpl<>(StoreChannel.class, StoreChannel::getName, Comparator.naturalOrder());
     }
 
     @Nonnull
@@ -453,7 +453,7 @@ public class GuildImpl implements Guild
     @Override
     public SortedSnowflakeCacheView<VoiceChannel> getVoiceChannelCache()
     {
-        return voiceChannelCache;
+        return new SortedSnowflakeCacheViewImpl<>(VoiceChannel.class, GuildChannel::getName, Comparator.naturalOrder());
     }
 
     @Nonnull
@@ -467,7 +467,7 @@ public class GuildImpl implements Guild
     @Override
     public SnowflakeCacheView<Emote> getEmoteCache()
     {
-        return emoteCache;
+        return new SnowflakeCacheViewImpl<>(Emote.class, Emote::getName);
     }
 
     @Nonnull
@@ -659,9 +659,10 @@ public class GuildImpl implements Guild
     @Override
     public GuildManager getManager()
     {
-        if (manager == null)
-            return manager = new GuildManagerImpl(this);
-        return manager;
+        //if (manager == null)
+        //    return manager = new GuildManagerImpl(this);
+        //return manager;
+        return new GuildManagerImpl(this);
     }
 
     @Nonnull
@@ -1530,7 +1531,7 @@ public class GuildImpl implements Guild
 
     public GuildImpl setFeatures(Set<String> features)
     {
-        this.features = Collections.unmodifiableSet(features);
+        //this.features = Collections.unmodifiableSet(features);
         return this;
     }
 
@@ -1664,7 +1665,7 @@ public class GuildImpl implements Guild
 
     public SortedSnowflakeCacheViewImpl<StoreChannel> getStoreChannelView()
     {
-        return storeChannelCache;
+        return new SortedSnowflakeCacheViewImpl<>(StoreChannel.class, StoreChannel::getName, Comparator.naturalOrder());
     }
 
     public SortedSnowflakeCacheViewImpl<TextChannel> getTextChannelsView()
@@ -1674,7 +1675,7 @@ public class GuildImpl implements Guild
 
     public SortedSnowflakeCacheViewImpl<VoiceChannel> getVoiceChannelsView()
     {
-        return voiceChannelCache;
+        return new SortedSnowflakeCacheViewImpl<>(VoiceChannel.class, GuildChannel::getName, Comparator.naturalOrder());
     }
 
     public SortedSnowflakeCacheViewImpl<Role> getRolesView()
@@ -1684,7 +1685,7 @@ public class GuildImpl implements Guild
 
     public SnowflakeCacheViewImpl<Emote> getEmotesView()
     {
-        return emoteCache;
+        return new SnowflakeCacheViewImpl<>(Emote.class, Emote::getName);
     }
 
     public MemberCacheViewImpl getMembersView()

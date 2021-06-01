@@ -53,7 +53,7 @@ public abstract class AbstractChannelImpl<T extends GuildChannel, M extends Abst
 
     protected final TLongObjectMap<PermissionOverride> overrides = MiscUtil.newLongMap();
 
-    protected ChannelManager manager;
+    //protected ChannelManager manager;
 
     protected GuildImpl guild;
     protected long parentId;
@@ -193,9 +193,10 @@ public abstract class AbstractChannelImpl<T extends GuildChannel, M extends Abst
     @Override
     public ChannelManager getManager()
     {
-        if (manager == null)
-            return manager = new ChannelManagerImpl(this);
-        return manager;
+        //if (manager == null)
+        //    return manager = new ChannelManagerImpl(this);
+        //return manager;
+        return new ChannelManagerImpl(this);
     }
 
     @Nonnull

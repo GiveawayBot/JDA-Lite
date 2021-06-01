@@ -51,9 +51,9 @@ public class RoleImpl implements Role
     private final JDAImpl api;
     private Guild guild;
 
-    private RoleManager manager;
+    //private RoleManager manager;
 
-    private RoleTagsImpl tags;
+    //private RoleTagsImpl tags;
     private String name;
     private boolean managed;
     private boolean hoisted;
@@ -67,7 +67,7 @@ public class RoleImpl implements Role
         this.id = id;
         this.api =(JDAImpl) guild.getJDA();
         this.guild = guild;
-        this.tags = api.isCacheFlagSet(CacheFlag.ROLE_TAGS) ? new RoleTagsImpl() : null;
+        //this.tags = api.isCacheFlagSet(CacheFlag.ROLE_TAGS) ? new RoleTagsImpl() : null;
     }
 
     @Override
@@ -295,9 +295,10 @@ public class RoleImpl implements Role
     @Override
     public RoleManager getManager()
     {
-        if (manager == null)
-            return manager = new RoleManagerImpl(this);
-        return manager;
+        //if (manager == null)
+        //    return manager = new RoleManagerImpl(this);
+        //return manager;
+        return new RoleManagerImpl(this);
     }
 
     @Nonnull
@@ -327,7 +328,7 @@ public class RoleImpl implements Role
     @Override
     public RoleTags getTags()
     {
-        return tags == null ? RoleTagsImpl.EMPTY : tags;
+        return RoleTagsImpl.EMPTY;
     }
 
     @Nonnull
@@ -438,9 +439,9 @@ public class RoleImpl implements Role
 
     public RoleImpl setTags(DataObject tags)
     {
-        if (this.tags == null)
-            return this;
-        this.tags = new RoleTagsImpl(tags);
+        //if (this.tags == null)
+        //    return this;
+        //this.tags = new RoleTagsImpl(tags);
         return this;
     }
 
