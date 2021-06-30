@@ -681,6 +681,7 @@ public class WebSocketClient extends WebSocketAdapter implements WebSocketListen
             LOG.warn("Missed 2 heartbeats! Trying to reconnect...");
             prepareClose();
             socket.disconnect(4900, "ZOMBIE CONNECTION");
+            api.setStatus(JDA.Status.DISCONNECTED);
         }
         else
         {
